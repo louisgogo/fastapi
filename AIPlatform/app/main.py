@@ -69,6 +69,8 @@ def create_app() -> FastAPI:
         redoc_url="/redoc" if settings.APP_DEBUG else None,
         openapi_url="/openapi.json" if settings.APP_DEBUG else None,
         lifespan=lifespan,  # 现在可以正确引用lifespan函数
+        # 明确指定OpenAPI版本
+        openapi_version="3.1.0",
     )
 
     # 配置CORS中间件
