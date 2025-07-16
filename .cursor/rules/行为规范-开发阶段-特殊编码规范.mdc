@@ -1,0 +1,12 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+1. JDK版本为17
+
+2. ORM框架使用Mybatis-PLUS
+
+3. 编码时在注释中标注作者为：malou
+
+4. 测试方法使用@DisplayName()注解描述测试内容

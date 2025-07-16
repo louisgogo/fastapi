@@ -1,0 +1,147 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# Java 开发规范
+
+## 代码组织结构
+
+### 目录结构
+src
+├── main
+│   ├── java
+│   │   └── com/jlpay
+│   │          └──/{_project_name_} <- Your package structure starts '{}'
+│   └── resources  <- 资源文件         
+├── test
+└─ pom.xml  <- Maven project file
+
+### 如何分包
+首先遵循COLA架构按层组织包，内部按功能组织包
+
+'''
+COLA架构通常分为四层分包，职责如下：
+1. 适配层（adapter）
+放Controller、MqListener等，负责接收外部请求（如HTTP调用）并转换为内部逻辑。
+2. 接口层（client）
+定义接口（api）、通信协议对象（dto）等，adapter会调用client包下的接口。
+2. 应用层（application）
+放服务编排类（apiImpl），协调多个领域对象完成业务用例，实现client包下的接口。
+3. 领域层（domain）
+核心业务逻辑，包含实体（Entity）、领域服务（DomainService）、仓储接口（Gateway）。
+4. 基础设施层（infrastructure）
+提供技术实现，如数据库操作（GatewayImpl）等。
+5. 公共层（common）
+放一些公共类，如工具类、常量类、枚举类等，避免重复代码。
+
+详细目录结构
+{_project_name_}
+├── adapter
+│   ├── {_domain1_} <-- 按照领域划分的目录,例如user
+│   │   └── {_domain1_}Controller、{_domain1_}Listener ...
+│   └── {_domain2_}
+├── client
+│   ├── {_domain1_}
+│   │       ├── api <-- 目录存放接口（如UserApi）
+│   │       └── dto <-- 目录存放通信协议对象
+│   │           ├── request <-- 目录存放通信协议请求对象（如UserRequest）
+│   │           └── response <-- 目录存放通信协议响应对象（如UserResponse）
+│   └── {_domain2_}
+│
+├── application
+│   ├── {_domain1_} 
+│   │   └── {_domain1_}ApiImpl...
+│   ├── {_domain2_}
+│   └── Transfer（使用MapStruct实现的转换器） 
+│
+├── domain
+│   ├── {_domain1_}
+│   │       ├── model <-- 领域实体（如User）
+│   │       └── service <-- 目录存放领域服务接口、领域服务实现类、仓储接口
+│   │           └── {_domain1_}Service、{_domain1_}ServiceImpl、{_domain1_}Gateway
+│   └── {_domain2_}
+│── infrastructure
+│   ├── {_domain1_} <-- 目录仓储接口实现、远程调用实现等
+│   │       └── {_domain1_}GatewayImpl、{_domain1_}FeignClient...
+│   └── {_domain2_}
+└─  common
+    ├── config <-- 配置文件
+    ├── utils <-- 工具类
+    ├── constant <-- 常量类
+    └── exception <-- 异常处理
+```
+
+### 命名规范
+1. 类和接口：使用PascalCase （例如UserController）
+2. 方法和变量：使用camelCase （例如getUserById）
+3. 常量：使用UPPER_SNAKE_CASE（例如MAX_RETRIES）
+4. 包：使用全部小写
+5. 避免缩写：使用有意义和描述性的名称
+
+## 编码规范
+
+### 组件架构
+1. 使用Spring提供的依赖注入（DI）来管理组件的依赖关系
+2. 应用IoC来解耦组件，提高可测试性
+
+### 反模式和代码异味
+1. 避免创建大型类，做太多。将大型类分解为更小、更易于管理的组件
+2. 避免创建长方法。将长方法分解为更小、更集中的方法
+3. 避免在多个方法中同时传递同一组数据项。创建一个类来封装数据项。
+4. 避免使用原始类型。创建值对象来表示领域概念。
+5. 限制使用Switch语句，特别是在大量的情况下。考虑在策略模式中使用多态性。
+6. 避免空Catch块。始终适当地处理异常，要么记录异常，要么重新抛出异常，要么采取纠正措施。
+
+## 测试方法
+
+### 单元测试
+1. 使用JUnit进行单元测试
+2. 使用Mockito来模拟依赖项
+3. 在单元测试中遵循 given-when-then模式
+4. 以高测试覆盖率为目标
+5. 编写独立测试，这样一个测试的失败不会影响另一个测试
+6. 测试方法前应添加注释，以解释测试的意图和预期结果，包含流程、分支、具体测试数据、mock内容等
+7. 测试时尽量不使用spring容器环境，对于需要的资源类使用mock
+
+### 测试组织
+1. 测试目录：将测试放在单独的“Test”目录中，测试类的包结构和源代码类相同
+2. 命名约定：使用清晰的命名约定为您的测试（例如UserServiceTest）
+3. 测试范围：主要测试业务逻辑和工具类，基础设施层infrastructure和适配层controller这两层不需要写单测，重点测试ServiceImpl和ApiImpl
+
+## 注释要求
+1. 使用Javadoc注释，并遵循正确的格式和样式
+2. 注释应该清晰、简单、易读，并包含必要的信息，如方法参数、返回值、异常情况、注意事项等
+3. 类前注释格式
+```java
+/**
+ * @author maxiangming
+ * @since {系统时间}
+ * Note: {类描述}
+ */
+```
+4. 方法注释格式
+```java
+/**
+ * @param {参数名} {参数类型} {参数描述}
+ * @return {返回值类型} {返回值描述}
+ * @throws {异常类型} {异常描述}
+ * Note: {方法描述}
+ */
+```
+4. 方法内注释使用行注释，外部使用文件注释
+5. 实体类的每个属性都应该有注释
+
+## 使用框架
+1. 使用Spring Boot作为应用程序框架，它提供自动配置、依赖管理、Web服务器等
+2. 使用Mybatis-plus作为ORM框架
+3. 外部调用使用FeignClient
+4. 使用swagger-annotations-jakarta作为API文档生成工具
+5. 使用Lombok作为Java注释工具
+6. 使用Validator作为参数校验工具
+7. 数据库连接池使用HikariCP
+8. 实体类转换使用MapStruct
+9. 公共方法参考公共包，参考引入的文档`Jlpay Commons`
+10. 绘制包图时使用PlantUML语言
+
+11. 绘制流程图使用mermaid语言

@@ -1,0 +1,55 @@
+# FastAPI Core Framework
+fastapi>=0.104.0,<0.105.0
+uvicorn[standard]>=0.24.0,<0.25.0
+python-multipart>=0.0.6,<0.1.0
+
+# Database
+sqlalchemy>=2.0.20,<3.0.0
+# 使用 psycopg2 作为 PostgreSQL 的同步驱动（如果需要 PostgreSQL）
+psycopg2-binary>=2.9.0,<3.0.0
+# asyncpg 作为 PostgreSQL 的异步驱动
+asyncpg>=0.29.0,<0.30.0
+# 或者使用 SQLite (默认)
+alembic>=1.13.0,<2.0.0
+
+# Pydantic Data Validation
+pydantic>=2.5.0,<3.0.0
+pydantic-settings>=2.1.0,<3.0.0
+
+# Authentication and Security
+python-jose[cryptography]>=3.3.0,<4.0.0
+passlib[bcrypt]>=1.7.4,<2.0.0
+bcrypt>=4.1.0,<5.0.0
+
+# HTTP Client
+httpx>=0.25.0,<0.26.0
+aiohttp>=3.9.0,<4.0.0
+
+# LangGraph and AI
+langgraph>=0.0.60
+langchain>=0.1.0
+langchain-core>=0.1.0
+
+# Logging and Monitoring
+structlog>=23.2.0,<24.0.0
+loguru>=0.7.0,<0.8.0
+
+# Utilities
+python-dotenv>=1.0.0,<2.0.0
+tenacity>=8.2.0,<9.0.0
+pendulum>=2.1.0,<3.0.0
+
+# Data Processing
+pandas>=2.1.0,<3.0.0
+
+# Development Tools
+pytest>=7.4.0,<8.0.0
+pytest-asyncio>=0.21.0,<0.22.0
+pytest-cov>=4.1.0,<5.0.0
+black>=23.11.0,<24.0.0
+isort>=5.13.0,<6.0.0
+mypy>=1.7.0,<2.0.0
+
+# API Documentation
+python-markdown==0.1.0
+pygments>=2.17.0,<3.0.0

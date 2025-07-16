@@ -1,0 +1,257 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+## 目的
+
+
++ 满足标准与专业化的技术诉求。
++ 可读性高、易于理解，便于维护。
++ 可与发布或缺陷这些场景实现联动。
++ 方便生成有条理、精确的CHANGELOG日志。
+
+## 提交规范
+
+
+```plain
+<type>(<scope>): <subject>
+<BLANK LINE>
+<body>
+<BLANK LINE>
+<footer>
+```
+
+
+
+中文释义：
+
+
+
+```plain
+<类型>[可选的作用域]: <描述>
+# 空一行
+[可选的正文]
+# 空一行
+[可选的脚注]
+```
+
+
+
+### Type
+
+
+:::warning
+注意：<font style="color:#DF2A3F;">:号后面有一个空格</font>。
+
+:::
+
+
+
+:::color4
++ **feat**：新的功能特性。
++ **fix**: bug修复。
++ **docs**: 文档修改。
++ **style:** 仅修改了空格、空行、格式缩进、逗号等代码风格，并未改变代码逻辑。
++ **refactor**: 代码重构，既没有修复bug也没有添加功能特性的代码变更。
++ **perf**: 改进性能的代码变更。
++ **test**: 添加缺失的测试或纠正现有的测试 。
++ **chore:**  构建过程或辅助工具的变动。
++ **revert**: 执行git revert打印的message。
+
+:::
+
+
+
+
+
+   **以下为可选项：**
+
+****
+
+:::color4
++ **ci**: 修改ci配置文件和构建脚本。
++ **release:** 发布新版本。
++ **workflow**: 工作流相关文件修改。
++ **<font style="color:rgba(0, 0, 0, 0.87);">scripts：添加脚本文件。</font>**
+
+:::
+
+
+
+
+
+### Scope
+
+
+`scope`也为必填项，用于描述改动的范围。如果是影响全局的改动，格式为`global`。可按类型分类或模块分类。如果一次commit修改影响了多个模块，或拆分成多次commit，或将影响最大的模块作为<font style="background-color:#F5F5F5;">scope</font>。
+
+
+
+### Subject
+
+
+`subject`是 commit 目的简短描述，不超过50个字符：
+
+
+
++ 主要描述`改动之前的情况`及`修改目的`。
++ 以动词开头，使用第一人称现在时，比如<font style="background-color:#F5F5F5;">change</font>，而不是<font style="background-color:#F5F5F5;">changed</font>或<font style="background-color:#F5F5F5;">changes</font>。
++ 末尾不加`.`或`。`
+
+
+
+### Body
+
+
+`body`对本次 commit 的详细描述，主要描述`改动之前的情况`及`修改目的`，可以分成多行。
+
+
+
+### Footer
+
+
+Footer 部分有三种情况供选择，分别是`Break Changes`、`Affect Issues`与`Close Issues`。
+
+
+
+#### Break Changes
+
+
+`break changes`指明是否产生了破坏性修改，涉及break changes的改动必须指明该项，类似版本升级、接口参数减少、接口删除、迁移等。
+
+
+
+#### Close Issues
+
+
+`close issues`指明本次提交涉及到的缺陷已完成修改，需要关闭相应的issues，填写方式：
+
+
+
+```plain
+close (#bug_id)
+```
+
+
+
+### Revert
+
+
+如果因为某种错误的操作，例如：合错或不小心将功能不完整代码合并到了发布分支，此时应用git revert回滚代码，而不是硬性回滚代码，格式为：以revert:开始，然后是回滚的标题，描述因什么而回滚，然后在主体部分要带上要恢复的commit id。
+
+
+
+## 约束
+
+
+结合[RFC2019](https://www.ietf.org/rfc/rfc2119.txt)，在下面规范中使用关键字来指示需求级别：
+
+
+
++ MUST（必须）
++ MUST NOT（禁止）
++ REQUIRED（需要）
++ SHALL（应当）
++ SHALL NOT（不应当）
++ SHOULD（应该）
++ SHOULD NOT（不应该）
++ RECOMMENDED（推荐）
++ MAY（可以）
++ OPTIONAL（可选）
+
+
+
+最佳实践：
+
+
+
++ 每次提交时**必须**添加类型名为前缀。
++ 类型feat**必须**在提交新功能特性时使用。
++ 类型fix**必须**在修复<font style="background-color:#F5F5F5;">bug</font>时使用。
++ 类型后面**可以**添加一个可选的作用域。例如：<font style="color:#E8323C;background-color:#F5F5F5;">fix(lang)</font>
++ 在类型/作用域前缀后面必须跟上一个简短描述，关于本次提交的代码修改。例如：<font style="color:#E8323C;background-color:#F5F5F5;">fix: 字符串中包含多个空格时的数组分析问题。</font>
++ **可以**在正文后空一行开始页脚，页脚应该包含这次代码修改的相关问题，比如：<font style="color:#F5222D;background-color:#E9E9E9;">Fixes #13</font>
++ 不兼容修改<font style="background-color:#F5F5F5;">(breaking change)</font>必须放置在提交的页脚或正文部分的最开始处，必须使用大写文本<font style="background-color:#F5F5F5;">BREAKING CHANGE</font>作为前缀，后跟冒号和一个空格。
++ 在<font style="background-color:#F5F5F5;">BREAKING CHANGE</font>: 后面**必须**提供一个描述，关于API的修改，比如：<font style="background-color:#F5F5F5;">BREAKING CHANGE: 环境变量目前优先于配置文件。</font>
++ 页脚**必须**包含不兼容修改、额外链接、问题引用和其他元信息。
++ <font style="background-color:#E9E9E9;"><SUBJECT>描述</font>后不应该添加中文‘。’或英文“.”。
+
+
+
+## 示例
+
+
+修改文档
+
+```markdown
+docs(changelog): 更新 changelog to v1.0.0(4a723385)
+```
+
+
+
+修复Bug
+
+```markdown
+fix(release): 需要依赖rxjs and zone.js的最新版本
+fix: 代码中的轻微拼写错误，请参阅该问题，以了解拼写错误修复修复的详细信息  issue #12
+```
+
+<font style="color:rgba(0, 0, 0, 0.87);">添加特性</font>
+
+```markdown
+feat(lang): 增加了国际化支持
+```
+
+
+
+ci变更
+
+```markdown
+ci(gitlab-ci): 更新.gitlab-ci.yml，添加编译类型参数
+ci(jenkins): 添加静态扫描到share-lib共享库
+```
+
+sql脚本
+
+```markdown
+scripts(sql): 增加一个gray字段
+```
+
+
+
+回滚代码
+
+
+
+```markdown
+revert: 增加 'fetch' option
+
+This reverts commit  a63db4e8749d974260206abc6fc3c45b70baea9b
+```
+
+
+
+<font style="color:rgb(153, 153, 153);"></font>
+
+## 其它
+
+
+**参考资料**
+
+
+
+1** **[Commitizen工具](https://github.com/commitizen/cz-cli)
+
+2 [Commit message 和 Change log 编写指南](http://ruanyifeng.com/blog/2016/01/commit_message_change_log.html)
+
+
+
+**附录**
+
+
+
+1 <font style="color:#333333;"></font>[《Commitizen插件使用指南》](http://https://jlpay.yuque.com/jl-framework/irt4h7/cuxet04izrg6set7?singleDoc#)
+
+<font style="color:#333333;">2 </font>[《git-commit-template插件保姆级使用教程》](https://jlpay.yuque.com/jl-framework/irt4h7/ytoaexski0m0b851?singleDoc# 《git-commit-template插件保姆级使用教程》)
+
