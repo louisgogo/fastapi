@@ -27,7 +27,7 @@ def get_dify_feedbacks(db: Session = Depends(get_db)):
     """获取Dify反馈列表"""
     service = DifyFeedbackService(db)
     feedbacks = service.get_all_feedbacks()
-    return DifyFeedbackListResponse(dify_feedback=[DifyFeedbackResponse(**feedback.model_dump()) for feedback in feedbacks])
+    return DifyFeedbackListResponse(dify_feedback=[DifyFeedbackResponse(**feedback.to_dict()) for feedback in feedbacks])
 
 @router.put("/{workflow_run_id}", response_model=DifyFeedbackResponse)
 def update_dify_feedback(

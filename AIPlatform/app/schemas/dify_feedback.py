@@ -22,6 +22,7 @@ class DifyFeedbackBase(BaseModel):
     
     app_id: str = Field(..., description="应用ID")
     app_name: str = Field(..., description="应用名称")
+    user_id: str = Field(..., description="关联用户ID")
     workflow_run_id: str = Field(..., description="工作流运行ID")
     query: str = Field(..., description="用户查询")
     sub_query: str = Field(..., description="子查询")
@@ -65,7 +66,6 @@ class DifyFeedbackResponse(DifyFeedbackBase):
     """
     
     id: uuid.UUID = Field(..., description="反馈ID")
-    user_id: uuid.UUID = Field(..., description="关联用户ID")
     created_at: datetime = Field(..., description="创建时间")
     updated_at: datetime = Field(..., description="更新时间")
     

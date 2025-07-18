@@ -21,6 +21,7 @@ def setup_routes():
     from .logs import router as logs_router
     from .feedback import router as feedback_router
     from .workflows import router as workflows_router
+    from .subgraphs import router as subgraphs_router
     from .dify_feedback import router as dify_feedback_router 
     
     # Include route modules
@@ -31,6 +32,7 @@ def setup_routes():
     api_router.include_router(logs_router, prefix="/logs", tags=["logs"])
     api_router.include_router(feedback_router, prefix="/feedback", tags=["feedback"])
     api_router.include_router(workflows_router, prefix="/workflows", tags=["workflows"])
+    api_router.include_router(subgraphs_router, prefix="/subgraphs", tags=["subgraphs"])
     api_router.include_router(dify_feedback_router, prefix="/dify-feedback", tags=["dify-feedback"])
 # 在模块导入时设置路由
 setup_routes()

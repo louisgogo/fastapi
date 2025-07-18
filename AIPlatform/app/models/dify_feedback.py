@@ -36,9 +36,8 @@ class DifyFeedback(Base):
         nullable=False,
         comment="应用名称"
     )
-    user_id: Mapped[uuid.UUID] = mapped_column(
-        UUID(as_uuid=True), 
-        ForeignKey("users.id"), 
+    user_id: Mapped[str] = mapped_column(
+        String(255), 
         nullable=False,
         comment="关联用户ID"
     )

@@ -22,6 +22,7 @@ from app.core.config import get_settings
 from app.core.exceptions import AppException
 from app.database.connection import create_tables
 from app.utils.logger import logger
+from app.middleware.auth import AuthMiddleware
 
 # 获取配置
 settings = get_settings()
@@ -80,6 +81,20 @@ def create_app() -> FastAPI:
         allow_credentials=settings.CORS_CREDENTIALS,
         allow_methods=settings.CORS_METHODS,
         allow_headers=settings.CORS_HEADERS,
+    )
+    
+    # 添加认证中间件（添加这段代码）
+    app.add_middleware(
+        AuthMiddleware,
+        exclude_paths=[
+            "/health",
+            "/",
+            "/docs",
+            "/redoc",
+            "/openapi.json",
+        ],
+        rate_limit_requests=100,
+        rate_limit_window=60,
     )
 
     # 注册路由

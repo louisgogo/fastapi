@@ -56,7 +56,7 @@ class AuthMiddleware(BaseHTTPMiddleware):
         # 简单的内存限流存储（生产环境应使用Redis）
         self.rate_limit_storage = {}
 
-    def dispatch(self, request: Request, call_next: Callable) -> Response:
+    async def dispatch(self, request: Request, call_next: Callable) -> Response:
         """
         处理请求的中间件主逻辑
         
@@ -79,8 +79,8 @@ class AuthMiddleware(BaseHTTPMiddleware):
                 self._authenticate_request(request)
                 self._check_rate_limit(request)
             
-            # 调用下一个处理器
-            response = call_next(request)
+            # 调用下一个处理器 - 添加await
+            response = await call_next(request)
             
             # 记录请求日志
             process_time = time.time() - start_time
@@ -96,7 +96,7 @@ class AuthMiddleware(BaseHTTPMiddleware):
             # 记录错误日志
             process_time = time.time() - start_time
             logger.error(
-                f"认证中间件处理请求失败: {str(e)}",
+                "认证中间件处理请求失败: {}".format(str(e)),  # 使用format而不是f-string
                 request_id=request_id,
                 path=request.url.path,
                 method=request.method,

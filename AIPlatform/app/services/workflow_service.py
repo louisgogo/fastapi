@@ -50,11 +50,9 @@ class WorkflowService:
         """
         try:
             # 导入并注册所有工作流
-            from app.workflows.langgraph.sql2data import SQL2DataWorkflow
-            from app.workflows.langgraph.nl2sql import NL2SQLWorkflow
+            from app.workflows.graph.nl2sql import NL2SQLWorkflow
             
             # 注册工作流实例
-            self.register_workflow("SQL2Data", SQL2DataWorkflow())
             self.register_workflow("NL2SQL", NL2SQLWorkflow())
             
             logger.info("Default workflows registered successfully")
